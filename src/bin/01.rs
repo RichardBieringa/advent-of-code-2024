@@ -1,7 +1,25 @@
 advent_of_code::solution!(1);
 
 pub fn part_one(input: &str) -> Option<u32> {
-    None
+    let (mut left, mut right): (Vec<u32>, Vec<u32>) = input
+        .lines()
+        .filter_map(|line| {
+            let mut split = line.split_whitespace();
+            let left = split.next().unwrap();
+            let right = split.next().unwrap();
+
+            Some((left.parse::<u32>().ok()?, right.parse::<u32>().ok()?))
+        })
+        .unzip();
+
+    left.sort();
+    right.sort();
+
+    let total = std::iter::zip(left, right)
+        .map(|(l, r)| l.abs_diff(r))
+        .sum();
+
+    Some(total)
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
